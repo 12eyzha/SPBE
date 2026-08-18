@@ -44,6 +44,7 @@ class User extends Authenticatable
             && in_array($this->role->name, $roles, true);
     }
 
+    // Pengajuan yang dibuat oleh user
     public function pengajuanKtp(): HasMany
     {
         return $this->hasMany(PengajuanKtp::class);
@@ -59,6 +60,7 @@ class User extends Authenticatable
         return $this->hasMany(PengajuanUmkm::class);
     }
 
+    // Pengaduan yang dibuat oleh user
     public function pengaduan(): HasMany
     {
         return $this->hasMany(Pengaduan::class);
@@ -67,5 +69,43 @@ class User extends Authenticatable
     public function pengaduanRespon(): HasMany
     {
         return $this->hasMany(PengaduanRespon::class);
+    }
+
+    // Approval pengajuan oleh admin / superadmin
+    public function approvedKtp(): HasMany
+    {
+        return $this->hasMany(PengajuanKtp::class, 'approved_by');
+    }
+
+    public function approvedSku(): HasMany
+    {
+        return $this->hasMany(PengajuanSku::class, 'approved_by');
+    }
+
+    public function approvedUmkm(): HasMany
+    {
+        return $this->hasMany(PengajuanUmkm::class, 'approved_by');
+    }
+
+    // Riwayat perubahan status
+    public function perubahanStatusKtp(): HasMany
+    {
+        return $this->hasMany(PengajuanKtpRiwayat::class, 'changed_by');
+    }
+
+    public function perubahanStatusSku(): HasMany
+    {
+        return $this->hasMany(PengajuanSkuRiwayat::class, 'changed_by');
+    }
+
+    public function perubahanStatusUmkm(): HasMany
+    {
+        return $this->hasMany(PengajuanUmkmRiwayat::class, 'changed_by');
+    }
+
+    // Statistik yang terakhir diperbarui oleh user
+    public function statistikDesaDiperbarui(): HasMany
+    {
+        return $this->hasMany(StatistikDesa::class, 'updated_by');
     }
 }

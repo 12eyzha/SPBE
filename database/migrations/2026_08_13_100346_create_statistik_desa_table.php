@@ -34,6 +34,10 @@ return new class extends Migration
             $table->unsignedInteger('usia_15_64')->default(0);
             $table->unsignedInteger('usia_65_plus')->default(0);
 
+            // Indeks Desa Membangun (IDM)
+            $table->decimal('idm_nilai', 5, 2)->nullable();
+            $table->string('idm_status', 50)->nullable();
+
             // Admin / Super Admin yang terakhir memperbarui statistik
             $table->foreignId('updated_by')
                 ->nullable()

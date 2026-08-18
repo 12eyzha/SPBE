@@ -16,20 +16,20 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            // Informasi produk
-            $table->string('nama_produk', 150);
+            // Informasi UMKM
+            $table->string('nama_umkm', 150);
 
             $table->foreignId('kategori_id')
                 ->constrained('kategori_umkm')
                 ->restrictOnDelete();
 
-            $table->text('deskripsi_produk');
+            $table->text('deskripsi_umkm');
 
             // Kisaran harga produk
             $table->decimal('harga_min', 15, 2);
             $table->decimal('harga_max', 15, 2);
 
-            // Lokasi usaha
+            // Tempat / lokasi UMKM
             $table->text('alamat');
 
             // Jam operasional
@@ -42,18 +42,16 @@ return new class extends Migration
             // Link e-commerce opsional
             $table->string('link_ecommerce', 255)->nullable();
 
-            // Status verifikasi
+            // Status proses pengajuan
             $table->enum('status', [
                 'menunggu_verifikasi',
+                'diproses',
                 'disetujui',
-                'ditolak'
+                'ditolak',
             ])->default('menunggu_verifikasi');
 
-            // Status operasional UMKM
-            $table->enum('status_operasional', [
-                'aktif',
-                'tidak_beroperasi'
-            ])->default('aktif');
+            // Status tampil / aktif UMKM
+            $table->boolean('is_active')->default(true);
 
             // Catatan admin
             $table->text('catatan_admin')->nullable();
@@ -65,6 +63,9 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->timestamp('approved_at')->nullable();
+
+            // Soft delete
+            $table->softDeletes();
 
             $table->timestamps();
         });

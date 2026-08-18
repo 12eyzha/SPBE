@@ -52,6 +52,11 @@ class PengajuanKtp extends Model
         return $this->hasMany(PengajuanKtpDokumen::class);
     }
 
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(PengajuanKtpRiwayat::class);
+    }
+
     public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');

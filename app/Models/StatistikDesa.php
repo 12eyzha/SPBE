@@ -24,6 +24,8 @@ class StatistikDesa extends Model
         'usia_0_14',
         'usia_15_64',
         'usia_65_plus',
+        'idm_nilai',
+        'idm_status',
         'updated_by',
     ];
 
@@ -41,6 +43,7 @@ class StatistikDesa extends Model
             'usia_0_14' => 'integer',
             'usia_15_64' => 'integer',
             'usia_65_plus' => 'integer',
+            'idm_nilai' => 'decimal:2',
         ];
     }
 

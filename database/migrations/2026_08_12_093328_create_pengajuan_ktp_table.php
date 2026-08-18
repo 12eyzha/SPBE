@@ -24,7 +24,9 @@ return new class extends Migration
             ]);
 
             // Data pemohon
+            // NIK merupakan data pribadi sensitif dan harus dibatasi aksesnya.
             $table->string('nik', 16);
+
             $table->string('nama_lengkap', 100);
             $table->string('nomor_kk', 16);
 
@@ -44,6 +46,7 @@ return new class extends Migration
             // Status pengajuan
             $table->enum('status', [
                 'menunggu_verifikasi',
+                'diproses',
                 'disetujui',
                 'ditolak',
             ])->default('menunggu_verifikasi');

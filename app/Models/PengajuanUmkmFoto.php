@@ -25,8 +25,8 @@ class PengajuanUmkmFoto extends Model
         ];
     }
 
-    public function pengajuanUmkm(): BelongsTo
+    public function pengajuan(): BelongsTo
     {
-        return $this->belongsTo(PengajuanUmkm::class);
+        return $this->belongsTo(PengajuanUmkm::class, 'pengajuan_umkm_id');
     }
 }
