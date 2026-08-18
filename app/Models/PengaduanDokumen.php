@@ -6,21 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PengajuanKtpDokumen extends Model
+class PengaduanDokumen extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengajuan_ktp_dokumen';
+    protected $table = 'pengaduan_dokumen';
 
     protected $fillable = [
-        'pengajuan_ktp_id',
-        'jenis_dokumen',
+        'pengaduan_id',
         'file_path',
         'nama_file',
     ];
 
-    public function pengajuan(): BelongsTo
+    public function pengaduan(): BelongsTo
     {
-        return $this->belongsTo(PengajuanKtp::class, 'pengajuan_ktp_id');
+        return $this->belongsTo(Pengaduan::class, 'pengaduan_id');
     }
 }

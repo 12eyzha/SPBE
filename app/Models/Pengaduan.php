@@ -17,7 +17,11 @@ class Pengaduan extends Model
         'user_id',
         'nama',
         'nomor',
+        'subjek',
         'keterangan',
+        'lokasi',
+        'rt',
+        'rw',
         'foto_bukti',
         'status',
     ];
@@ -30,5 +34,10 @@ class Pengaduan extends Model
     public function respon(): HasMany
     {
         return $this->hasMany(PengaduanRespon::class);
+    }
+
+    public function dokumen(): HasMany
+    {
+        return $this->hasMany(PengaduanDokumen::class);
     }
 }

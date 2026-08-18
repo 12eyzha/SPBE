@@ -35,10 +35,20 @@ return new class extends Migration
             $table->string('jenis_usaha', 100);
             $table->text('deskripsi_usaha');
             $table->text('alamat_usaha');
+            $table->string('rt_usaha', 5);
+            $table->string('rw_usaha', 5);
+
+            // Lama menjalankan usaha
+            $table->unsignedSmallInteger('lama_menjalankan_usaha');
+
+            // Perkiraan penghasilan per bulan
+            // Menyimpan nilai/kategori yang dipilih pada FE.
+            $table->string('perkiraan_penghasilan_per_bulan', 100);
 
             // Status pengajuan
             $table->enum('status', [
                 'menunggu_verifikasi',
+                'diproses',
                 'disetujui',
                 'ditolak',
             ])->default('menunggu_verifikasi');

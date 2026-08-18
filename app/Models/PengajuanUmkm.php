@@ -6,18 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PengajuanUmkm extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pengajuan_umkm';
 
     protected $fillable = [
         'user_id',
-        'nama_produk',
+        'nama_umkm',
         'kategori_id',
-        'deskripsi_produk',
+        'deskripsi_umkm',
         'harga_min',
         'harga_max',
         'alamat',
@@ -26,7 +27,7 @@ class PengajuanUmkm extends Model
         'nomor_wa',
         'link_ecommerce',
         'status',
-        'status_operasional',
+        'is_active',
         'catatan_admin',
         'approved_by',
         'approved_at',
@@ -39,7 +40,9 @@ class PengajuanUmkm extends Model
             'harga_max' => 'decimal:2',
             'jam_buka_mulai' => 'datetime:H:i',
             'jam_buka_selesai' => 'datetime:H:i',
+            'is_active' => 'boolean',
             'approved_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -57,6 +60,11 @@ class PengajuanUmkm extends Model
     {
         return $this->hasMany(PengajuanUmkmFoto::class)
             ->orderBy('urutan');
+    }
+
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(PengajuanUmkmRiwayat::class);
     }
 
     public function approvedBy(): BelongsTo

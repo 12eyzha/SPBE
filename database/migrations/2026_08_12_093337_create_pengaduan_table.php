@@ -19,10 +19,18 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            // Data yang dikirim pada form
+            // Identitas pelapor
             $table->string('nama', 100);
             $table->string('nomor', 20);
+
+            // Informasi pengaduan
+            $table->string('subjek', 150);
             $table->text('keterangan');
+
+            // Lokasi kejadian
+            $table->text('lokasi');
+            $table->string('rt', 5);
+            $table->string('rw', 5);
 
             // Foto bukti bersifat opsional
             $table->string('foto_bukti', 255)->nullable();
@@ -31,7 +39,7 @@ return new class extends Migration
             $table->enum('status', [
                 'terkirim',
                 'diteruskan',
-                'selesai'
+                'selesai',
             ])->default('terkirim');
 
             $table->timestamps();

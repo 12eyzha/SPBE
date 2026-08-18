@@ -29,6 +29,10 @@ class PengajuanSku extends Model
         'jenis_usaha',
         'deskripsi_usaha',
         'alamat_usaha',
+        'rt_usaha',
+        'rw_usaha',
+        'lama_menjalankan_usaha',
+        'perkiraan_penghasilan_per_bulan',
         'status',
         'catatan_admin',
         'no_antrian',
@@ -40,6 +44,7 @@ class PengajuanSku extends Model
     {
         return [
             'tanggal_lahir' => 'date',
+            'lama_menjalankan_usaha' => 'integer',
             'approved_at' => 'datetime',
         ];
     }
@@ -52,6 +57,11 @@ class PengajuanSku extends Model
     public function dokumen(): HasMany
     {
         return $this->hasMany(PengajuanSkuDokumen::class);
+    }
+
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(PengajuanSkuRiwayat::class);
     }
 
     public function approvedBy(): BelongsTo
