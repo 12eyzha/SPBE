@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PengaduanResource extends JsonResource
+class AdminPengaduanResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +22,7 @@ class PengaduanResource extends JsonResource
             */
 
             'nama' => $this->nama,
-            'nomor' => $this->maskNomor($this->nomor),
+            'nomor' => $this->nomor,
 
             /*
             |--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ class PengaduanResource extends JsonResource
                 $this->foto_bukti !== null,
                 fn () => [
                     'tersedia' => true,
-                    'url' => route('files.pengaduan.foto', [
+                    'url' => route('admin.files.pengaduan.foto', [
                         'pengaduan' => $this->id,
                     ]),
                 ]
@@ -63,8 +63,7 @@ class PengaduanResource extends JsonResource
                 fn () => $this->dokumen->map(fn ($dokumen) => [
                     'id' => $dokumen->id,
                     'nama_file' => $dokumen->nama_file,
-                    'tersedia' => true,
-                    'url' => route('files.pengaduan', [
+                    'url' => route('admin.files.pengaduan', [
                         'dokumen' => $dokumen->id,
                     ]),
                 ])
@@ -80,7 +79,7 @@ class PengaduanResource extends JsonResource
 
             /*
             |--------------------------------------------------------------------------
-            | Respon Pengaduan
+            | Respon Petugas
             |--------------------------------------------------------------------------
             */
 
@@ -96,22 +95,5 @@ class PengaduanResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];
-    }
-
-    private function maskNomor(?string $nomor): ?string
-    {
-        if (! $nomor) {
-            return null;
-        }
-
-        $length = strlen($nomor);
-
-        if ($length <= 4) {
-            return str_repeat('*', $length);
-        }
-
-        return substr($nomor, 0, 2)
-            . str_repeat('*', $length - 4)
-            . substr($nomor, -2);
     }
 }
