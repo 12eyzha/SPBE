@@ -45,6 +45,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $userRole->id,
+            'is_active' => true,
         ]);
 
         Auth::login($user);
@@ -73,17 +74,30 @@ class AuthController extends Controller
             ],
         ]);
 
-        if (! Auth::attempt($credentials)) {
+        $user = User::query()
+            ->with('role')
+            ->where('email', $credentials['email'])
+            ->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'message' => 'Email atau password salah.',
             ], 422);
         }
 
+        if (! $user->is_active) {
+            return response()->json([
+                'message' => 'Akun Anda sedang dinonaktifkan.',
+            ], 403);
+        }
+
+        Auth::login($user);
+
         $request->session()->regenerate();
 
         return response()->json([
             'message' => 'Login berhasil.',
-            'user' => $request->user()->load('role'),
+            'user' => $user,
         ]);
     }
 

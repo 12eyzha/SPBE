@@ -46,8 +46,10 @@ class PengajuanKtpResource extends JsonResource
                 fn () => $this->dokumen->map(fn ($dokumen) => [
                     'id' => $dokumen->id,
                     'jenis_dokumen' => $dokumen->jenis_dokumen,
-                    'file_path' => $dokumen->file_path,
                     'nama_file' => $dokumen->nama_file,
+                    'url' => route('files.ktp', [
+                        'dokumen' => $dokumen->id,
+                    ]),
                 ])
             ),
 

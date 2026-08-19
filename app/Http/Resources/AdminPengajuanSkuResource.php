@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PengajuanSkuResource extends JsonResource
+class AdminPengajuanSkuResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,11 +19,16 @@ class PengajuanSkuResource extends JsonResource
             |--------------------------------------------------------------------------
             | Data Pemohon
             |--------------------------------------------------------------------------
+            |
+            | Resource ini khusus Admin/Super Admin.
+            | NIK dan Nomor KK ditampilkan penuh.
+            |
             */
 
-            'nik' => $this->maskNik($this->nik),
+            'nik' => $this->nik,
             'nama_lengkap' => $this->nama_lengkap,
-            'nomor_kk' => $this->maskNomorKk($this->nomor_kk),
+            'nomor_kk' => $this->nomor_kk,
+
             'tempat_lahir' => $this->tempat_lahir,
             'tanggal_lahir' => $this->tanggal_lahir?->format('Y-m-d'),
             'jenis_kelamin' => $this->jenis_kelamin,
@@ -63,7 +68,24 @@ class PengajuanSkuResource extends JsonResource
             'status' => $this->status,
             'catatan_admin' => $this->catatan_admin,
             'no_antrian' => $this->no_antrian,
+
+            'approved_by' => $this->approved_by,
             'approved_at' => $this->approved_at?->toISOString(),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Data User
+            |--------------------------------------------------------------------------
+            */
+
+            'user' => $this->whenLoaded(
+                'user',
+                fn () => [
+                    'id' => $this->user->id,
+                    'name' => $this->user->name,
+                    'email' => $this->user->email,
+                ]
+            ),
 
             /*
             |--------------------------------------------------------------------------
@@ -77,7 +99,7 @@ class PengajuanSkuResource extends JsonResource
                     'id' => $dokumen->id,
                     'jenis_dokumen' => $dokumen->jenis_dokumen,
                     'nama_file' => $dokumen->nama_file,
-                    'url' => route('files.sku', [
+                    'url' => route('admin.files.sku', [
                         'dokumen' => $dokumen->id,
                     ]),
                 ])
@@ -103,27 +125,5 @@ class PengajuanSkuResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];
-    }
-
-    private function maskNik(?string $nik): ?string
-    {
-        if (! $nik) {
-            return null;
-        }
-
-        return substr($nik, 0, 4)
-            . str_repeat('*', 8)
-            . substr($nik, -4);
-    }
-
-    private function maskNomorKk(?string $nomorKk): ?string
-    {
-        if (! $nomorKk) {
-            return null;
-        }
-
-        return substr($nomorKk, 0, 4)
-            . str_repeat('*', 8)
-            . substr($nomorKk, -4);
     }
 }

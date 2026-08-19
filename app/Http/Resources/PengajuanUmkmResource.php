@@ -72,10 +72,6 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             | Foto
             |--------------------------------------------------------------------------
-            |
-            | URL/file endpoint belum dibuat, jadi untuk sekarang kita
-            | tampilkan metadata file tanpa membuat URL publik.
-            |
             */
 
             'foto' => $this->whenLoaded(
@@ -83,7 +79,9 @@ class PengajuanUmkmResource extends JsonResource
                 fn () => $this->foto->map(fn ($foto) => [
                     'id' => $foto->id,
                     'urutan' => $foto->urutan,
-                    'file_path' => $foto->file_path,
+                    'url' => route('files.umkm', [
+                        'foto' => $foto->id,
+                    ]),
                 ])
             ),
 
