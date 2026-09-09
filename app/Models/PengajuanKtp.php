@@ -32,6 +32,8 @@ class PengajuanKtp extends Model
         'no_antrian',
         'approved_by',
         'approved_at',
+        'visit_date',
+        'expired_at',
     ];
 
     protected function casts(): array
@@ -39,6 +41,8 @@ class PengajuanKtp extends Model
         return [
             'tanggal_lahir' => 'date',
             'approved_at' => 'datetime',
+            'visit_date' => 'date',
+            'expired_at' => 'datetime',
         ];
     }
 
@@ -49,16 +53,23 @@ class PengajuanKtp extends Model
 
     public function dokumen(): HasMany
     {
-        return $this->hasMany(PengajuanKtpDokumen::class);
+        return $this->hasMany(
+            PengajuanKtpDokumen::class
+        );
     }
 
     public function riwayat(): HasMany
     {
-        return $this->hasMany(PengajuanKtpRiwayat::class);
+        return $this->hasMany(
+            PengajuanKtpRiwayat::class
+        );
     }
 
     public function approvedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(
+            User::class,
+            'approved_by'
+        );
     }
 }

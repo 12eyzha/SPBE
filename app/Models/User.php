@@ -7,17 +7,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'name',
         'email',
         'password',
         'role_id',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -30,6 +32,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -90,22 +93,34 @@ class User extends Authenticatable
     // Riwayat perubahan status
     public function perubahanStatusKtp(): HasMany
     {
-        return $this->hasMany(PengajuanKtpRiwayat::class, 'changed_by');
+        return $this->hasMany(
+            PengajuanKtpRiwayat::class,
+            'changed_by'
+        );
     }
 
     public function perubahanStatusSku(): HasMany
     {
-        return $this->hasMany(PengajuanSkuRiwayat::class, 'changed_by');
+        return $this->hasMany(
+            PengajuanSkuRiwayat::class,
+            'changed_by'
+        );
     }
 
     public function perubahanStatusUmkm(): HasMany
     {
-        return $this->hasMany(PengajuanUmkmRiwayat::class, 'changed_by');
+        return $this->hasMany(
+            PengajuanUmkmRiwayat::class,
+            'changed_by'
+        );
     }
 
     // Statistik yang terakhir diperbarui oleh user
     public function statistikDesaDiperbarui(): HasMany
     {
-        return $this->hasMany(StatistikDesa::class, 'updated_by');
+        return $this->hasMany(
+            StatistikDesa::class,
+            'updated_by'
+        );
     }
 }
