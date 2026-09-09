@@ -10,10 +10,12 @@ class PengajuanUmkmResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
-    public function toArray(Request $request): array
-    {
+    public function toArray(
+        Request $request
+    ): array {
         return [
-            'id' => $this->id,
+            'id' =>
+                $this->id,
 
             /*
             |--------------------------------------------------------------------------
@@ -21,22 +23,32 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'nama_umkm' => $this->nama_umkm,
+            'nama_umkm' =>
+                $this->nama_umkm,
 
-            'kategori' => $this->whenLoaded(
-                'kategori',
-                fn () => [
-                    'id' => $this->kategori->id,
-                    'nama' => $this->kategori->nama,
-                ]
-            ),
+            'kategori' =>
+                $this->whenLoaded(
+                    'kategori',
+                    fn () => [
+                        'id' =>
+                            $this->kategori->id,
 
-            'deskripsi_umkm' => $this->deskripsi_umkm,
+                        'nama' =>
+                            $this->kategori->nama,
+                    ]
+                ),
 
-            'harga_min' => $this->harga_min,
-            'harga_max' => $this->harga_max,
+            'deskripsi_umkm' =>
+                $this->deskripsi_umkm,
 
-            'alamat' => $this->alamat,
+            'harga_min' =>
+                $this->harga_min,
+
+            'harga_max' =>
+                $this->harga_max,
+
+            'alamat' =>
+                $this->alamat,
 
             /*
             |--------------------------------------------------------------------------
@@ -44,8 +56,13 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'jam_buka_mulai' => $this->jam_buka_mulai?->format('H:i'),
-            'jam_buka_selesai' => $this->jam_buka_selesai?->format('H:i'),
+            'jam_buka_mulai' =>
+                $this->jam_buka_mulai
+                    ?->format('H:i'),
+
+            'jam_buka_selesai' =>
+                $this->jam_buka_selesai
+                    ?->format('H:i'),
 
             /*
             |--------------------------------------------------------------------------
@@ -53,8 +70,11 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'nomor_wa' => $this->nomor_wa,
-            'link_ecommerce' => $this->link_ecommerce,
+            'nomor_wa' =>
+                $this->nomor_wa,
+
+            'link_ecommerce' =>
+                $this->link_ecommerce,
 
             /*
             |--------------------------------------------------------------------------
@@ -62,11 +82,18 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'status' => $this->status,
-            'is_active' => $this->is_active,
-            'catatan_admin' => $this->catatan_admin,
-            'no_antrian' => $this->no_antrian,
-            'approved_at' => $this->approved_at?->toISOString(),
+            'status' =>
+                $this->status,
+
+            'is_active' =>
+                $this->is_active,
+
+            'catatan_admin' =>
+                $this->catatan_admin,
+
+            'approved_at' =>
+                $this->approved_at
+                    ?->toISOString(),
 
             /*
             |--------------------------------------------------------------------------
@@ -74,16 +101,29 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'foto' => $this->whenLoaded(
-                'foto',
-                fn () => $this->foto->map(fn ($foto) => [
-                    'id' => $foto->id,
-                    'urutan' => $foto->urutan,
-                    'url' => route('files.umkm', [
-                        'foto' => $foto->id,
-                    ]),
-                ])
-            ),
+            'foto' =>
+                $this->whenLoaded(
+                    'foto',
+                    fn () =>
+                        $this->foto->map(
+                            fn ($foto) => [
+                                'id' =>
+                                    $foto->id,
+
+                                'urutan' =>
+                                    $foto->urutan,
+
+                                'url' =>
+                                    route(
+                                        'files.umkm',
+                                        [
+                                            'foto' =>
+                                                $foto->id,
+                                        ]
+                                    ),
+                            ]
+                        )
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -91,19 +131,45 @@ class PengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'riwayat' => $this->whenLoaded(
-                'riwayat',
-                fn () => $this->riwayat->map(fn ($riwayat) => [
-                    'id' => $riwayat->id,
-                    'status' => $riwayat->status,
-                    'catatan' => $riwayat->catatan,
-                    'changed_by' => $riwayat->changed_by,
-                    'created_at' => $riwayat->created_at?->toISOString(),
-                ])
-            ),
+            'riwayat' =>
+                $this->whenLoaded(
+                    'riwayat',
+                    fn () =>
+                        $this->riwayat->map(
+                            fn ($riwayat) => [
+                                'id' =>
+                                    $riwayat->id,
 
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+                                'status' =>
+                                    $riwayat->status,
+
+                                'catatan' =>
+                                    $riwayat->catatan,
+
+                                'changed_by' =>
+                                    $riwayat->changed_by,
+
+                                'created_at' =>
+                                    $riwayat
+                                        ->created_at
+                                        ?->toISOString(),
+                            ]
+                        )
+                ),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Timestamps
+            |--------------------------------------------------------------------------
+            */
+
+            'created_at' =>
+                $this->created_at
+                    ?->toISOString(),
+
+            'updated_at' =>
+                $this->updated_at
+                    ?->toISOString(),
         ];
     }
 }

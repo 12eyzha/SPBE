@@ -26,18 +26,44 @@ class Pengaduan extends Model
         'status',
     ];
 
+    /**
+     * User yang membuat pengaduan.
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class
+        );
     }
 
+    /**
+     * Respons dari Admin / Super Admin.
+     */
     public function respon(): HasMany
     {
-        return $this->hasMany(PengaduanRespon::class);
+        return $this->hasMany(
+            PengaduanRespon::class
+        );
     }
 
+    /**
+     * Dokumen pendukung pengaduan.
+     */
     public function dokumen(): HasMany
     {
-        return $this->hasMany(PengaduanDokumen::class);
+        return $this->hasMany(
+            PengaduanDokumen::class
+        );
+    }
+
+    /**
+     * Riwayat perubahan status pengaduan.
+     */
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(
+            PengaduanRiwayat::class,
+            'pengaduan_id'
+        );
     }
 }

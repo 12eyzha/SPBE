@@ -10,10 +10,12 @@ class AdminPengajuanUmkmResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
-    public function toArray(Request $request): array
-    {
+    public function toArray(
+        Request $request
+    ): array {
         return [
-            'id' => $this->id,
+            'id' =>
+                $this->id,
 
             /*
             |--------------------------------------------------------------------------
@@ -21,22 +23,32 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'nama_umkm' => $this->nama_umkm,
+            'nama_umkm' =>
+                $this->nama_umkm,
 
-            'kategori' => $this->whenLoaded(
-                'kategori',
-                fn () => [
-                    'id' => $this->kategori->id,
-                    'nama' => $this->kategori->nama,
-                ]
-            ),
+            'kategori' =>
+                $this->whenLoaded(
+                    'kategori',
+                    fn () => [
+                        'id' =>
+                            $this->kategori->id,
 
-            'deskripsi_umkm' => $this->deskripsi_umkm,
+                        'nama' =>
+                            $this->kategori->nama,
+                    ]
+                ),
 
-            'harga_min' => $this->harga_min,
-            'harga_max' => $this->harga_max,
+            'deskripsi_umkm' =>
+                $this->deskripsi_umkm,
 
-            'alamat' => $this->alamat,
+            'harga_min' =>
+                $this->harga_min,
+
+            'harga_max' =>
+                $this->harga_max,
+
+            'alamat' =>
+                $this->alamat,
 
             /*
             |--------------------------------------------------------------------------
@@ -44,8 +56,13 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'jam_buka_mulai' => $this->jam_buka_mulai?->format('H:i'),
-            'jam_buka_selesai' => $this->jam_buka_selesai?->format('H:i'),
+            'jam_buka_mulai' =>
+                $this->jam_buka_mulai
+                    ?->format('H:i'),
+
+            'jam_buka_selesai' =>
+                $this->jam_buka_selesai
+                    ?->format('H:i'),
 
             /*
             |--------------------------------------------------------------------------
@@ -53,8 +70,11 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'nomor_wa' => $this->nomor_wa,
-            'link_ecommerce' => $this->link_ecommerce,
+            'nomor_wa' =>
+                $this->nomor_wa,
+
+            'link_ecommerce' =>
+                $this->link_ecommerce,
 
             /*
             |--------------------------------------------------------------------------
@@ -62,11 +82,21 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'status' => $this->status,
-            'is_active' => $this->is_active,
-            'catatan_admin' => $this->catatan_admin,
-            'approved_by' => $this->approved_by,
-            'approved_at' => $this->approved_at?->toISOString(),
+            'status' =>
+                $this->status,
+
+            'is_active' =>
+                $this->is_active,
+
+            'catatan_admin' =>
+                $this->catatan_admin,
+
+            'approved_by' =>
+                $this->approved_by,
+
+            'approved_at' =>
+                $this->approved_at
+                    ?->toISOString(),
 
             /*
             |--------------------------------------------------------------------------
@@ -74,14 +104,20 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'user' => $this->whenLoaded(
-                'user',
-                fn () => [
-                    'id' => $this->user->id,
-                    'name' => $this->user->name,
-                    'email' => $this->user->email,
-                ]
-            ),
+            'user' =>
+                $this->whenLoaded(
+                    'user',
+                    fn () => [
+                        'id' =>
+                            $this->user->id,
+
+                        'name' =>
+                            $this->user->name,
+
+                        'email' =>
+                            $this->user->email,
+                    ]
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -89,16 +125,29 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'foto' => $this->whenLoaded(
-                'foto',
-                fn () => $this->foto->map(fn ($foto) => [
-                    'id' => $foto->id,
-                    'urutan' => $foto->urutan,
-                    'url' => route('admin.files.umkm', [
-                        'foto' => $foto->id,
-                    ]),
-                ])
-            ),
+            'foto' =>
+                $this->whenLoaded(
+                    'foto',
+                    fn () =>
+                        $this->foto->map(
+                            fn ($foto) => [
+                                'id' =>
+                                    $foto->id,
+
+                                'urutan' =>
+                                    $foto->urutan,
+
+                                'url' =>
+                                    route(
+                                        'admin.files.umkm',
+                                        [
+                                            'foto' =>
+                                                $foto->id,
+                                        ]
+                                    ),
+                            ]
+                        )
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -106,19 +155,67 @@ class AdminPengajuanUmkmResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'riwayat' => $this->whenLoaded(
-                'riwayat',
-                fn () => $this->riwayat->map(fn ($riwayat) => [
-                    'id' => $riwayat->id,
-                    'status' => $riwayat->status,
-                    'catatan' => $riwayat->catatan,
-                    'changed_by' => $riwayat->changed_by,
-                    'created_at' => $riwayat->created_at?->toISOString(),
-                ])
-            ),
+            'riwayat' =>
+                $this->whenLoaded(
+                    'riwayat',
+                    fn () =>
+                        $this->riwayat->map(
+                            fn ($riwayat) => [
+                                'id' =>
+                                    $riwayat->id,
 
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+                                'status' =>
+                                    $riwayat->status,
+
+                                'catatan' =>
+                                    $riwayat->catatan,
+
+                                'changed_by' =>
+                                    $riwayat->changed_by,
+
+                                'petugas' =>
+                                    $riwayat->relationLoaded(
+                                        'changedBy'
+                                    )
+                                        ? [
+                                            'id' =>
+                                                $riwayat
+                                                    ->changedBy
+                                                    ->id,
+
+                                            'name' =>
+                                                $riwayat
+                                                    ->changedBy
+                                                    ->name,
+
+                                            'email' =>
+                                                $riwayat
+                                                    ->changedBy
+                                                    ->email,
+                                        ]
+                                        : null,
+
+                                'created_at' =>
+                                    $riwayat
+                                        ->created_at
+                                        ?->toISOString(),
+                            ]
+                        )
+                ),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Timestamps
+            |--------------------------------------------------------------------------
+            */
+
+            'created_at' =>
+                $this->created_at
+                    ?->toISOString(),
+
+            'updated_at' =>
+                $this->updated_at
+                    ?->toISOString(),
         ];
     }
 }

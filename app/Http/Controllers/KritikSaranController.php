@@ -2,41 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKritikSaranRequest;
 use App\Models\KritikSaran;
 use Illuminate\Http\JsonResponse;
-use Throwable;
+use Illuminate\Http\Request;
 
 class KritikSaranController extends Controller
 {
     /**
-     * Menyimpan kritik atau saran baru.
+     * Menyimpan kritik dan saran dari masyarakat.
+     *
+     * POST /api/kritik-saran
      */
-    public function store(StoreKritikSaranRequest $request): JsonResponse
-    {
-        try {
-            $kritikSaran = KritikSaran::create([
-                'nama' => $request->nama,
-                'email' => $request->email,
-                'pesan' => $request->pesan,
-            ]);
+    public function store(
+        Request $request
+    ): JsonResponse {
+        $validated = $request->validate([
+            'nama' => [
+                'required',
+                'string',
+                'max:150',
+            ],
 
-            return response()->json([
-                'message' => 'Kritik dan saran berhasil dikirim.',
-                'data' => [
-                    'id' => $kritikSaran->id,
-                    'nama' => $kritikSaran->nama,
-                    'email' => $kritikSaran->email,
-                    'pesan' => $kritikSaran->pesan,
-                    'created_at' => $kritikSaran->created_at?->toISOString(),
-                ],
-            ], 201);
-        } catch (Throwable $e) {
-            report($e);
+            'email' => [
+                'required',
+                'email',
+                'max:150',
+            ],
 
-            return response()->json([
-                'message' => 'Kritik dan saran gagal dikirim.',
-            ], 500);
-        }
+            'pesan' => [
+                'required',
+                'string',
+                'max:5000',
+            ],
+        ]);
+
+        $kritikSaran = KritikSaran::create([
+            'nama' => $validated['nama'],
+            'email' => $validated['email'],
+            'pesan' => $validated['pesan'],
+        ]);
+
+        return response()->json([
+            'message' =>
+                'Kritik dan saran berhasil dikirim. Terima kasih atas masukan Anda.',
+
+            'data' =>
+                $kritikSaran,
+        ], 201);
     }
 }

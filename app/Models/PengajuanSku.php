@@ -15,16 +15,37 @@ class PengajuanSku extends Model
 
     protected $fillable = [
         'user_id',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Data Pemohon
+        |--------------------------------------------------------------------------
+        */
+
         'nik',
         'nama_lengkap',
         'nomor_kk',
         'tempat_lahir',
         'tanggal_lahir',
         'jenis_kelamin',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Alamat Pemohon
+        |--------------------------------------------------------------------------
+        */
+
         'alamat',
         'rt',
         'rw',
         'kode_pos',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Data Usaha
+        |--------------------------------------------------------------------------
+        */
+
         'nama_usaha',
         'jenis_usaha',
         'deskripsi_usaha',
@@ -33,39 +54,101 @@ class PengajuanSku extends Model
         'rw_usaha',
         'lama_menjalankan_usaha',
         'perkiraan_penghasilan_per_bulan',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Status Pengajuan
+        |--------------------------------------------------------------------------
+        */
+
         'status',
         'catatan_admin',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Antrean
+        |--------------------------------------------------------------------------
+        */
+
         'no_antrian',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Approval
+        |--------------------------------------------------------------------------
+        */
+
         'approved_by',
         'approved_at',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Jadwal Pelayanan
+        |--------------------------------------------------------------------------
+        */
+
+        'visit_date',
+        'expired_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'tanggal_lahir' => 'date',
-            'lama_menjalankan_usaha' => 'integer',
-            'approved_at' => 'datetime',
+            'tanggal_lahir' =>
+                'date',
+
+            'lama_menjalankan_usaha' =>
+                'integer',
+
+            'approved_at' =>
+                'datetime',
+
+            'visit_date' =>
+                'date',
+
+            'expired_at' =>
+                'datetime',
         ];
     }
 
+    /**
+     * User pemilik pengajuan.
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class
+        );
     }
 
+    /**
+     * Dokumen pendukung SKU.
+     */
     public function dokumen(): HasMany
     {
-        return $this->hasMany(PengajuanSkuDokumen::class);
+        return $this->hasMany(
+            PengajuanSkuDokumen::class
+        );
     }
 
+    /**
+     * Riwayat perubahan status SKU.
+     */
     public function riwayat(): HasMany
     {
-        return $this->hasMany(PengajuanSkuRiwayat::class);
+        return $this->hasMany(
+            PengajuanSkuRiwayat::class
+        );
     }
 
+    /**
+     * Admin / Super Admin yang menyetujui pengajuan.
+     */
     public function approvedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(
+            User::class,
+            'approved_by'
+        );
     }
 }

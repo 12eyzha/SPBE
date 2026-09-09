@@ -13,7 +13,8 @@ class PengaduanResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' =>
+                $this->id,
 
             /*
             |--------------------------------------------------------------------------
@@ -21,8 +22,13 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'nama' => $this->nama,
-            'nomor' => $this->maskNomor($this->nomor),
+            'nama' =>
+                $this->nama,
+
+            'nomor' =>
+                $this->maskNomor(
+                    $this->nomor
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -30,11 +36,20 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'subjek' => $this->subjek,
-            'keterangan' => $this->keterangan,
-            'lokasi' => $this->lokasi,
-            'rt' => $this->rt,
-            'rw' => $this->rw,
+            'subjek' =>
+                $this->subjek,
+
+            'keterangan' =>
+                $this->keterangan,
+
+            'lokasi' =>
+                $this->lokasi,
+
+            'rt' =>
+                $this->rt,
+
+            'rw' =>
+                $this->rw,
 
             /*
             |--------------------------------------------------------------------------
@@ -42,15 +57,23 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'foto_bukti' => $this->when(
-                $this->foto_bukti !== null,
-                fn () => [
-                    'tersedia' => true,
-                    'url' => route('files.pengaduan.foto', [
-                        'pengaduan' => $this->id,
-                    ]),
-                ]
-            ),
+            'foto_bukti' =>
+                $this->when(
+                    $this->foto_bukti !== null,
+                    fn () => [
+                        'tersedia' =>
+                            true,
+
+                        'url' =>
+                            route(
+                                'files.pengaduan.foto',
+                                [
+                                    'pengaduan' =>
+                                        $this->id,
+                                ]
+                            ),
+                    ]
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -58,17 +81,32 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'dokumen' => $this->whenLoaded(
-                'dokumen',
-                fn () => $this->dokumen->map(fn ($dokumen) => [
-                    'id' => $dokumen->id,
-                    'nama_file' => $dokumen->nama_file,
-                    'tersedia' => true,
-                    'url' => route('files.pengaduan', [
-                        'dokumen' => $dokumen->id,
-                    ]),
-                ])
-            ),
+            'dokumen' =>
+                $this->whenLoaded(
+                    'dokumen',
+                    fn () =>
+                        $this->dokumen->map(
+                            fn ($dokumen) => [
+                                'id' =>
+                                    $dokumen->id,
+
+                                'nama_file' =>
+                                    $dokumen->nama_file,
+
+                                'tersedia' =>
+                                    true,
+
+                                'url' =>
+                                    route(
+                                        'files.pengaduan',
+                                        [
+                                            'dokumen' =>
+                                                $dokumen->id,
+                                        ]
+                                    ),
+                            ]
+                        )
+                ),
 
             /*
             |--------------------------------------------------------------------------
@@ -76,7 +114,8 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'status' => $this->status,
+            'status' =>
+                $this->status,
 
             /*
             |--------------------------------------------------------------------------
@@ -84,34 +123,119 @@ class PengaduanResource extends JsonResource
             |--------------------------------------------------------------------------
             */
 
-            'respon' => $this->whenLoaded(
-                'respon',
-                fn () => $this->respon->map(fn ($respon) => [
-                    'id' => $respon->id,
-                    'respon' => $respon->respon,
-                    'created_at' => $respon->created_at?->toISOString(),
-                ])
-            ),
+            'respon' =>
+                $this->whenLoaded(
+                    'respon',
+                    fn () =>
+                        $this->respon->map(
+                            fn ($respon) => [
+                                'id' =>
+                                    $respon->id,
 
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+                                'respon' =>
+                                    $respon->respon,
+
+                                'created_at' =>
+                                    $respon
+                                        ->created_at
+                                        ?->toISOString(),
+                            ]
+                        )
+                ),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Riwayat Status
+            |--------------------------------------------------------------------------
+            |
+            | User dapat melihat:
+            | - status
+            | - catatan
+            | - waktu perubahan
+            |
+            | Identitas internal petugas tidak
+            | ditampilkan pada resource user.
+            |
+            */
+
+            'riwayat' =>
+                $this->whenLoaded(
+                    'riwayat',
+                    fn () =>
+                        $this->riwayat->map(
+                            fn ($riwayat) => [
+                                'id' =>
+                                    $riwayat->id,
+
+                                'status' =>
+                                    $riwayat->status,
+
+                                'catatan' =>
+                                    $riwayat->catatan,
+
+                                'created_at' =>
+                                    $riwayat
+                                        ->created_at
+                                        ?->toISOString(),
+                            ]
+                        )
+                ),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Timestamps
+            |--------------------------------------------------------------------------
+            */
+
+            'created_at' =>
+                $this->created_at
+                    ?->toISOString(),
+
+            'updated_at' =>
+                $this->updated_at
+                    ?->toISOString(),
         ];
     }
 
-    private function maskNomor(?string $nomor): ?string
-    {
+    /**
+     * Masking nomor telepon untuk user.
+     *
+     * Contoh:
+     * 081234567890
+     * menjadi:
+     * 08********90
+     */
+    private function maskNomor(
+        ?string $nomor
+    ): ?string {
         if (! $nomor) {
             return null;
         }
 
-        $length = strlen($nomor);
+        $length =
+            strlen($nomor);
 
-        if ($length <= 4) {
-            return str_repeat('*', $length);
+        if (
+            $length <= 4
+        ) {
+            return str_repeat(
+                '*',
+                $length
+            );
         }
 
-        return substr($nomor, 0, 2)
-            . str_repeat('*', $length - 4)
-            . substr($nomor, -2);
+        return substr(
+            $nomor,
+            0,
+            2
+        )
+            . str_repeat(
+                '*',
+                $length - 4
+            )
+            . substr(
+                $nomor,
+                -2
+            );
     }
 }
